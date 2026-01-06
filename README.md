@@ -1,66 +1,69 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# kintaikanri — ローカル開発用 README
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+このリポジトリは Laravel アプリケーションです。以下はローカルで素早く動かすための手順です。
 
-## About Laravel
+## 前提
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- OS: Linux（Debian/Ubuntu 系想定）
+- 必要なソフト: `php`, `node`, `npm`, `composer`（またはローカル `composer.phar`）
+- SQLite を利用する場合、PHP に `php-sqlite3` が必要です
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## クイックセットアップ（初回）
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+プロジェクトルートで実行:
 
-## Learning Laravel
+```bash
+# 環境ファイルを作成
+cp .env.example .env
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+# SQLite を使う場合（ファイル作成）
+mkdir -p database
+touch database/database.sqlite
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+# Composer 依存をインストール
+php composer.phar install --no-interaction || composer install --no-interaction
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+# アプリキー生成
+php artisan key:generate
 
-## Laravel Sponsors
+# DB マイグレーションとシード（開発用: 既存データを消しても良い場合）
+php artisan migrate:fresh --seed --force
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# ストレージリンク作成とパーミッション
+php artisan storage:link || true
+chmod -R 775 storage bootstrap/cache || true
 
-### Premium Partners
+# Node 依存とアセットビルド
+npm install
+npm run build
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+※ システムに `php-sqlite3` がない場合（Debian/Ubuntu 系）:
 
-## Contributing
+```bash
+sudo apt update
+sudo apt install -y php-sqlite3
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## 開発サーバの起動
 
-## Code of Conduct
+```bash
+# 開発サーバを起動
+php artisan serve --host=0.0.0.0 --port=8000
+# ブラウザで: http://127.0.0.1:8000
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+停止は `Ctrl+C` を押すか、バックグラウンド実行ではプロセスを停止してください。
 
-## Security Vulnerabilities
+## Docker での起動（任意）
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+docker compose up -d --build
+# 停止
+docker compose down
+```
 
-## License
+## 補足
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- アセットを再ビルドするには `npm run build` を実行してください。
+- 本番環境向けの設定やセキュリティ対策は別途必要です。
