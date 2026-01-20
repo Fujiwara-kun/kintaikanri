@@ -1,0 +1,49 @@
+# 簡易仕様書
+
+## アプリ名
+
+勤怠管理アプリケーション
+
+## 対象 OS およびブラウザ
+
+# 対象 OS
+
+Windows 10 以上
+macOS 10.14 以上
+Linux（Ubuntu 18.04 以上）
+
+# 対象ブラウザ
+
+Google Chrome 90 以上
+Mozilla Firefox 88 以上
+Safari 14 以上
+Microsoft Edge 90 以上
+
+## 開発環境/言語
+
+# 開発環境
+
+OS: Windows11
+エディタ: Visual Studio Code
+実行環境: Laravel Artisan
+
+# 開発言語
+
+HTML5
+CSS
+JavaScript
+PHP
+
+# 開発期間
+
+2 周間
+
+# 機能概要（機能一覧）
+
+出勤ボタン
+休憩開始ボタン
+休憩終了ボタン
+退勤ボタン
+現在の時刻の表示
+
+# 画面概要
